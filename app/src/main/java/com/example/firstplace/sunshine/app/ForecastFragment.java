@@ -126,7 +126,7 @@ public  class ForecastFragment extends Fragment {
                 builder.appendPath("forecast");
                 builder.appendQueryParameter("q","Sao Paulo");
                 builder.appendQueryParameter("appid","dca3bdf26ddbcbd2c250a040654956b3");
-                builder.appendQueryParameter("unitis","metric");
+                builder.appendQueryParameter("units","metric");
                 URL url = new URL(builder.build().toString());
 
 
