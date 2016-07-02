@@ -65,15 +65,7 @@ public  class ForecastFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-            SharedPreferences settings= PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String key = getString(R.string.pref_location_key);
-            String defaultLocation=getString(R.string.pref_location_default);
-            String location = settings.getString(key,defaultLocation);
-
-
-
-            weatherTask.execute(location);
+            updateWeather();
 
                 }
 
@@ -84,7 +76,7 @@ public  class ForecastFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.fragment_main,container,false);
-        String[] forecastArray = {
+       /* String[] forecastArray = {
                     "Mon 9/10 - Cloudy - 20/17",
                     "Tue 9/11 - Sunny - 25/8",
                     "Wed 9/12 - Cloudy - 21/17",
@@ -92,10 +84,10 @@ public  class ForecastFragment extends Fragment {
                     "Fri 9/14 - Rainy - 19/10",
                     "Sat 9/15 - TRAPPED IN WEATHERSTATION - 23/18",
                     "Sun 9/16 - Sunny - 20/7"
-        };
+        };*/
 
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
-        adapter = new ArrayAdapter<String>(rootView.getContext(),R.layout.list_item_forecast,R.id.list_item_forecast_textview,weekForecast);
+       // List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
+        adapter = new ArrayAdapter<String>(rootView.getContext(),R.layout.list_item_forecast,R.id.list_item_forecast_textview,new ArrayList<String>());
         ListView list_view_forecast = (ListView) rootView.findViewById(R.id.list_view_forecast);
         list_view_forecast.setAdapter(adapter);
 
@@ -112,6 +104,24 @@ public  class ForecastFragment extends Fragment {
         return rootView;
 
     }
+    public void updateWeather(){
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        SharedPreferences settings= PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String key = getString(R.string.pref_location_key);
+        String defaultLocation=getString(R.string.pref_location_default);
+        String location = settings.getString(key,defaultLocation);
+        String unit = settings.getString(getString(R.string.pref_location_key),getString(R.string.pref_unit_default));
+        weatherTask.execute(location,unit);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        updateWeather();
+
+    }
+
+
 
 
 
@@ -124,7 +134,10 @@ public  class ForecastFragment extends Fragment {
         protected void onPostExecute(String[] result) {
 
             if(result != null) {
-                adapter.clear();
+                try{
+                adapter.clear();}catch(Exception e){}
+
+
                 for (String dayforecastStr : result) {
                     adapter.add(dayforecastStr);
                 }
@@ -151,7 +164,7 @@ public  class ForecastFragment extends Fragment {
                     builder.appendPath("forecast");
                     builder.appendQueryParameter("q",Params[0]);
                     builder.appendQueryParameter("appid", "dca3bdf26ddbcbd2c250a040654956b3");
-                    builder.appendQueryParameter("units", "metric");
+                    builder.appendQueryParameter("units", Params[1]);
                     URL url = new URL(builder.build().toString());
                     //Log.v("a",builder.build().toString() );
 
@@ -186,7 +199,7 @@ public  class ForecastFragment extends Fragment {
                     WeatherDataParser weatherdataparser = new WeatherDataParser();
                     try {
 
-                        return weatherdataparser.getWeatherDataFromJson(forecastJsonStr, 7);
+                        return weatherdataparser.getWeatherDataFromJson(forecastJsonStr, 7,"metric");
                     } catch (JSONException e) {
                     }
 

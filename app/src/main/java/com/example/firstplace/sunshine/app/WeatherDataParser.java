@@ -39,8 +39,14 @@ public class WeatherDataParser {
     /**
      * Prepare the weather high/lows for presentation.
      */
-    public String formatHighLows(double high, double low) {
+    public String formatHighLows(double high, double low, String unitType) {
         // For presentation, assume the user doesn't care about tenths of a degree.
+        if (unitType.equals("imperial")) {
+            high = (high * 1.8) + 32;
+            low = (low * 1.8) + 32;
+        } else if (!unitType.equals("metric")) {
+            Log.d("Test", "Unit type not found: " + unitType);
+                          }
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);
 
@@ -55,9 +61,9 @@ public class WeatherDataParser {
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it
      * into an Object hierarchy for us.
      */
-    public String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
+    public String[] getWeatherDataFromJson(String forecastJsonStr, int numDays,String unitType)
             throws JSONException {
-        
+
         // These are the names of the JSON objects that need to be extracted.
         final String OWM_LIST = "list";
         final String OWM_WEATHER = "weather";
@@ -118,7 +124,7 @@ public class WeatherDataParser {
                 double high = mainInfo.getDouble(OWM_MAX);
                 double low = mainInfo.getDouble(OWM_MIN);
 
-                highAndLow = formatHighLows(high, low);
+                highAndLow = formatHighLows(high, low,unitType);
                 resultStrs[i] = titleize(day + " - " + description + " - " + highAndLow);
                  }catch(Exception e){}
         }
