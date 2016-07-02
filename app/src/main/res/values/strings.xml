@@ -9,10 +9,15 @@
     <string name="pref_location_label">Localização</string>
     <string name="pref_location_default" translatable="false">São Paulo</string>
 
-    <string name="pref_unit_key" translatable="false">unit</string>
-    <string name="pref_unit_label">Unidades</string>
-    <string name="pref_unit_default" translatable="false">metric</string>
-    <string name="pref_units_label">Temperature Units</string>
+
+    <string name="pref_units_key" translatable="false">unit</string>
+    <string name="pref_units_label">Unidades de Medida</string>
+    <string name="pref_units_default" translatable="false">metric</string>
+    <string name="pref_units_label_metric">Celsius</string>,
+    <string name="pref_units_label_kelvin">Kelvin</string>
+    <string name="pref_units_metric">metric</string>
+    <string name="pref_units_kelvin">kelvin</string>
+
 
 
 </resources>

@@ -41,11 +41,12 @@ public class WeatherDataParser {
      */
     public String formatHighLows(double high, double low, String unitType) {
         // For presentation, assume the user doesn't care about tenths of a degree.
-        if (unitType.equals("imperial")) {
+        if (unitType.equals("kelvin")) {
             high = (high * 1.8) + 32;
             low = (low * 1.8) + 32;
         } else if (!unitType.equals("metric")) {
             Log.d("Test", "Unit type not found: " + unitType);
+
                           }
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);
@@ -125,7 +126,14 @@ public class WeatherDataParser {
                 double low = mainInfo.getDouble(OWM_MIN);
 
                 highAndLow = formatHighLows(high, low,unitType);
-                resultStrs[i] = titleize(day + " - " + description + " - " + highAndLow);
+                String unitTag="";
+                if(unitType.equals("metric")){
+                    unitTag="C";
+                }
+                else if (unitType.equals("kelvin")){
+                    unitTag="K";
+                }
+                resultStrs[i] = titleize(day + " - " + description + " - " + highAndLow + unitTag);
                  }catch(Exception e){}
         }
 

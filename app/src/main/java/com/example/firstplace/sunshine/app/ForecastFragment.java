@@ -107,10 +107,16 @@ public  class ForecastFragment extends Fragment {
     public void updateWeather(){
         FetchWeatherTask weatherTask = new FetchWeatherTask();
         SharedPreferences settings= PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String key = getString(R.string.pref_location_key);
+
+        String keylocation = getString(R.string.pref_location_key);
         String defaultLocation=getString(R.string.pref_location_default);
-        String location = settings.getString(key,defaultLocation);
-        String unit = settings.getString(getString(R.string.pref_location_key),getString(R.string.pref_unit_default));
+        String location = settings.getString(keylocation,defaultLocation);
+
+        String keyunit = getString(R.string.pref_units_key);
+        String defaultunit = getString(R.string.pref_units_default);
+
+        String unit = settings.getString(keyunit,defaultunit);
+
         weatherTask.execute(location,unit);
     }
 
@@ -199,7 +205,7 @@ public  class ForecastFragment extends Fragment {
                     WeatherDataParser weatherdataparser = new WeatherDataParser();
                     try {
 
-                        return weatherdataparser.getWeatherDataFromJson(forecastJsonStr, 7,"metric");
+                        return weatherdataparser.getWeatherDataFromJson(forecastJsonStr, 7,Params[1]);
                     } catch (JSONException e) {
                     }
 
