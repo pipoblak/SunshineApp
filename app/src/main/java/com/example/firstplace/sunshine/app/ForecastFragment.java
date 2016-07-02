@@ -73,7 +73,7 @@ public  class ForecastFragment extends Fragment {
 
 
 
-            weatherTask.execute("São Paulo");
+            weatherTask.execute(location);
 
                 }
 
@@ -153,7 +153,7 @@ public  class ForecastFragment extends Fragment {
                     builder.appendQueryParameter("appid", "dca3bdf26ddbcbd2c250a040654956b3");
                     builder.appendQueryParameter("units", "metric");
                     URL url = new URL(builder.build().toString());
-                    Log.v("a",builder.build().toString() );
+                    //Log.v("a",builder.build().toString() );
 
                     // Create the request to OpenWeatherMap, and open the connection
                     urlConnection = (HttpURLConnection) url.openConnection();
@@ -182,7 +182,7 @@ public  class ForecastFragment extends Fragment {
                         return null;
                     }
                     forecastJsonStr = buffer.toString();
-                    //  Log.v(LOG_TAG,"Forecast Json Strings" + forecastJsonStr);
+                    // Log.v(LOG_TAG,"Forecast Json Strings" + forecastJsonStr);
                     WeatherDataParser weatherdataparser = new WeatherDataParser();
                     try {
 

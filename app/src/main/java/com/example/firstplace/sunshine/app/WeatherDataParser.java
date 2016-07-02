@@ -57,7 +57,7 @@ public class WeatherDataParser {
      */
     public String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
             throws JSONException {
-
+        
         // These are the names of the JSON objects that need to be extracted.
         final String OWM_LIST = "list";
         final String OWM_WEATHER = "weather";
@@ -119,7 +119,8 @@ public class WeatherDataParser {
                 double low = mainInfo.getDouble(OWM_MIN);
 
                 highAndLow = formatHighLows(high, low);
-                resultStrs[i] = titleize(day + " - " + description + " - " + highAndLow);}catch(Exception e){}
+                resultStrs[i] = titleize(day + " - " + description + " - " + highAndLow);
+                 }catch(Exception e){}
         }
 
 
