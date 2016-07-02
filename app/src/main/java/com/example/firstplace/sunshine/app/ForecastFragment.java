@@ -1,9 +1,11 @@
 package com.example.firstplace.sunshine.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -38,6 +40,7 @@ import java.util.List;
  */
 
 public  class ForecastFragment extends Fragment {
+
    public String forecastJsonStr = null;
     ArrayAdapter<String> adapter;
     Uri.Builder builder;
@@ -63,8 +66,14 @@ public  class ForecastFragment extends Fragment {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
             FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute("Sao Paulo");
+            SharedPreferences settings= PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String key = getString(R.string.pref_location_key);
+            String defaultLocation=getString(R.string.pref_location_default);
+            String location = settings.getString(key,defaultLocation);
 
+
+
+            weatherTask.execute("São Paulo");
 
                 }
 
@@ -113,13 +122,13 @@ public  class ForecastFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String[] result) {
-            adapter.clear();
 
-            for (String dayforecastStr : result){
-                adapter.add(dayforecastStr);
+            if(result != null) {
+                adapter.clear();
+                for (String dayforecastStr : result) {
+                    adapter.add(dayforecastStr);
+                }
             }
-
-
         }
 
         protected String[] doInBackground(String... Params) {
@@ -140,11 +149,11 @@ public  class ForecastFragment extends Fragment {
                     builder.appendPath("data");
                     builder.appendPath("2.5");
                     builder.appendPath("forecast");
-                    builder.appendQueryParameter("q", "Sao Paulo");
+                    builder.appendQueryParameter("q",Params[0]);
                     builder.appendQueryParameter("appid", "dca3bdf26ddbcbd2c250a040654956b3");
                     builder.appendQueryParameter("units", "metric");
                     URL url = new URL(builder.build().toString());
-
+                    Log.v("a",builder.build().toString() );
 
                     // Create the request to OpenWeatherMap, and open the connection
                     urlConnection = (HttpURLConnection) url.openConnection();
