@@ -2,6 +2,8 @@
     <string name="app_name">Sunshine</string>
     <string name="action_settings">Settings</string>
     <string name="action_refresh">Atualizar</string>
+    <string name="action_map">Mapa da Localização</string>
+    <string name="action_share">Share</string>
     <string name="title_activity_detail">Detalhamento</string>
     <string name="title_activity_settings">Settings</string>
 
@@ -17,6 +19,7 @@
     <string name="pref_units_label_kelvin">Kelvin</string>
     <string name="pref_units_metric">metric</string>
     <string name="pref_units_kelvin">kelvin</string>
+
 
 
 

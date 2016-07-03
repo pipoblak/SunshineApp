@@ -2,7 +2,9 @@ package com.example.firstplace.sunshine.app;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -62,8 +64,36 @@ public class MainActivity extends AppCompatActivity {
             return true;
 
         }
+        else if (id == R.id.action_map) {
+
+            openPreferredLocationInMap();
+            return true;
+
+        }
 
         return super.onOptionsItemSelected(item);
+
+
+    }
+    private void openPreferredLocationInMap(){
+        SharedPreferences sharedPrefs= PreferenceManager.getDefaultSharedPreferences(this);
+        String keylocation = getString(R.string.pref_location_key);
+        String defaultLocation=getString(R.string.pref_location_default);
+        String location = sharedPrefs.getString(keylocation,defaultLocation);
+
+        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon().appendQueryParameter("q",location ).build();
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+
+        if (intent.resolveActivity(getPackageManager()) != null ){
+
+        startActivity(intent);
+
+        }
+        else{
+            Log.d("Error","Não foi possivel acessar a localizacao" + location);
+        }
     }
 
 
